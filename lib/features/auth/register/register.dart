@@ -1,8 +1,10 @@
 import 'package:evently_app/core/assets_manager/assets_manager.dart';
 import 'package:evently_app/core/resources/validator.dart';
+import 'package:evently_app/core/routes_manager/routes_manager.dart';
 import 'package:evently_app/core/widgets/custom_elevated_button.dart';
 import 'package:evently_app/core/widgets/custom_text_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
+import 'package:evently_app/features/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -108,7 +110,9 @@ class _RegisterState extends State<Register> {
                       "Already Have Account ? ",
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                    CustomTextButton(text: "Login", onTap: () {}),
+                    CustomTextButton(text: "Login", onTap: () {
+                      Navigator.pushReplacementNamed(context, RoutesManager.login);
+                    }),
                   ],
                 ),
               ],
