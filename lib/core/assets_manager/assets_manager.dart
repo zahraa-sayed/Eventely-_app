@@ -8,5 +8,6 @@ abstract class ImageAssets {
   static const String holiday = "$base/holiday.png";
   static const String sport = "$base/sport.png";
   static const String workShop = "$base/workShop.png";
+  static const String routeProfile = "$base/profile_route-1.png";
 
 }
