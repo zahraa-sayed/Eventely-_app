@@ -77,6 +77,26 @@ class ThemeManager {
       ),
     ),
     textTheme: TextTheme(
+      headlineSmall: GoogleFonts.inter(
+        color: ColorsManager.white,
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w400,
+      ),
+      headlineLarge: GoogleFonts.inter(
+        color: ColorsManager.white,
+        fontSize: 24.sp,
+        fontWeight: FontWeight.bold,
+      ),
+      headlineMedium: GoogleFonts.inter(
+        color: ColorsManager.blue,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.bold,
+      ),
+      titleSmall: GoogleFonts.inter(
+        color: ColorsManager.black,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.bold,
+      ),
       bodySmall: GoogleFonts.inter(
         fontSize: 16.sp,
         fontWeight: FontWeight.w500,
