@@ -45,7 +45,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
           borderRadius: BorderRadius.circular(36.r),
         ),
         labelColor: ColorsManager.blue,
-        unselectedLabelColor: ColorsManager.whiteBlue,
+        //unselectedLabelColor: ColorsManager.whiteBlue,
         tabs: widget.categories
             .map(
               (category) => TabItem(

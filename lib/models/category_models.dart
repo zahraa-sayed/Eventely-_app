@@ -25,4 +25,15 @@ class CategoryModels {
     CategoryModels(id: "8", name: "WorkShop", iconData: Icons.workspaces_rounded, imagePath: ""),
     CategoryModels(id: "9", name: "BookClub", iconData: Icons.book_rounded, imagePath: ""),
   ];
+  static List<CategoryModels> categories = [
+    CategoryModels(id: "0", name: "Sports", iconData: Icons.sports, imagePath: ""),
+    CategoryModels(id: "1", name: "Birthday", iconData: Icons.cake, imagePath: ""),
+    CategoryModels(id: "2", name: "Meeting", iconData: Icons.meeting_room, imagePath: ""),
+    CategoryModels(id: "3", name: "Gaming", iconData: Icons.gamepad_rounded, imagePath: ""),
+    CategoryModels(id: "4", name: "Eating", iconData: Icons.local_pizza_rounded, imagePath: ""),
+    CategoryModels(id: "5", name: "Holiday", iconData: Icons.holiday_village_rounded, imagePath: ""),
+    CategoryModels(id: "6", name: "Exhibition", iconData: Icons.water_drop, imagePath: ""),
+    CategoryModels(id: "7", name: "WorkShop", iconData: Icons.workspaces_rounded, imagePath: ""),
+    CategoryModels(id: "8", name: "BookClub", iconData: Icons.book_rounded, imagePath: ""),
+  ];
 }
