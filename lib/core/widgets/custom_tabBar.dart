@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'tab_item.dart';
 import '../../models/category_models.dart';
-import '../resources/colors_manager.dart';
 
 class CustomTabBar extends StatefulWidget {
   const CustomTabBar({
@@ -34,29 +33,25 @@ class _CustomTabBarState extends State<CustomTabBar> {
       length: widget.categories.length,
       child: TabBar(
         onTap: (index) {
-          selectedIndex = index;
-          setState(() {});
+          setState(() {
+            selectedIndex = index;
+          });
         },
-        padding: EdgeInsets.symmetric(vertical: 16, ),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
         isScrollable: true,
-        indicator: BoxDecoration(
-          color: ColorsManager.whiteBlue,
-          borderRadius: BorderRadius.circular(36.r),
-        ),
-        labelColor: ColorsManager.blue,
-        //unselectedLabelColor: ColorsManager.whiteBlue,
-        tabs: widget.categories
-            .map(
-              (category) => TabItem(
-                selectedTabBgColor: widget.selectedBgColor,
-                selectedTabFgColor: widget.selectedFgColor,
-                unSelectedTabBgColor: widget.unSelectedBgColor,
-                unSelectedTabFgColor: widget.unSelectedFgColor,
-                category: category,
-              ),
-            )
-            .toList(),
+        indicator: const BoxDecoration(),
+        tabs: List.generate(widget.categories.length, (index) {
+          final category = widget.categories[index];
+          return TabItem(
+            selectedTabBgColor: widget.selectedBgColor,
+            selectedTabFgColor: widget.selectedFgColor,
+            unSelectedTabBgColor: widget.unSelectedBgColor,
+            unSelectedTabFgColor: widget.unSelectedFgColor,
+            category: category,
+            isSelected: selectedIndex == index,
+          );
+        }),
       ),
     );
   }

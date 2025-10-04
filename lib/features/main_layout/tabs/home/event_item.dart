@@ -35,7 +35,7 @@ class EventItem extends StatelessWidget {
           height: 203.h,
           decoration: BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 image: AssetImage(ImageAssets.meetingCover)),
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(color: ColorsManager.blue, width: 1),
@@ -69,10 +69,14 @@ class EventItem extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Padding(
-                padding: REdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                child: Card(
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Padding(
+                  padding: REdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
                         child: Text(

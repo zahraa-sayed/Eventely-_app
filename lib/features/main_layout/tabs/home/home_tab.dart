@@ -1,12 +1,12 @@
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/widgets/custom_tabBar.dart';
-import 'package:evently_app/core/widgets/tab_item.dart';
 import 'package:evently_app/features/main_layout/tabs/home/event_item.dart';
 import 'package:evently_app/models/category_models.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../../../../core/widgets/tab_item.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -23,10 +23,10 @@ class _HomeTabState extends State<HomeTab> {
     return Column(
       children: [
         Container(
-          padding: REdgeInsets.only(top: 40),
+          padding: REdgeInsets.only(top: 40, bottom: 16),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: ColorsManager.blue,
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(14.r)),
           ),
           child: Column(
@@ -51,7 +51,7 @@ class _HomeTabState extends State<HomeTab> {
                           children: [
                             Icon(
                               Icons.location_on_outlined,
-                              color: ColorsManager.white,
+                              color: ColorsManager.ofWhite,
                             ),
                             SizedBox(width: 4.w),
                             Text(
@@ -70,7 +70,7 @@ class _HomeTabState extends State<HomeTab> {
                     InkWell(
                       onTap: () {},
                       child: Card(
-                        color: ColorsManager.white,
+                        color: ColorsManager.ofWhite,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -83,12 +83,24 @@ class _HomeTabState extends State<HomeTab> {
                   ],
                 ),
               ),
-              CustomTabBar(
-                categories: CategoryModels.categoriesWithAll,
-                selectedBgColor: ColorsManager.whiteBlue,
-                selectedFgColor: ColorsManager.blue,
-                unSelectedBgColor: Colors.transparent,
-                unSelectedFgColor: ColorsManager.whiteBlue,
+              DefaultTabController(
+                length: CategoryModels.categoriesWithAll.length,
+                child: TabBar(
+                  isScrollable: true,
+                  indicatorColor: Colors.transparent,
+                  tabs: CategoryModels.categoriesWithAll
+                      .map(
+                        (category) => TabItem(
+                      selectedTabBgColor: ColorsManager.whiteBlue,
+                      selectedTabFgColor: ColorsManager.blue,
+                      unSelectedTabBgColor: Colors.transparent,
+                      unSelectedTabFgColor: ColorsManager.whiteBlue,
+                      isSelected: selectedIndex == CategoryModels.categoriesWithAll.indexOf(category),
+                      category: category,
+                    ),
+                  )
+                      .toList(),
+                ),
               ),
             ],
           ),
