@@ -6,7 +6,7 @@ import 'package:evently_app/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../core/widgets/tab_item.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -17,29 +17,30 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
+  late AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          padding: REdgeInsets.only(top: 40, bottom: 16),
+          padding: REdgeInsets.only(top: 40),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: ColorsManager.blue,
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(14.r)),
           ),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: REdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Welcome Back ✨",
+                          appLocalizations.welcome_message,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         Text(
@@ -51,7 +52,7 @@ class _HomeTabState extends State<HomeTab> {
                           children: [
                             Icon(
                               Icons.location_on_outlined,
-                              color: ColorsManager.ofWhite,
+                              color: ColorsManager.white,
                             ),
                             SizedBox(width: 4.w),
                             Text(
@@ -70,9 +71,9 @@ class _HomeTabState extends State<HomeTab> {
                     InkWell(
                       onTap: () {},
                       child: Card(
-                        color: ColorsManager.ofWhite,
+                        color: ColorsManager.white,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: REdgeInsets.all(8.0),
                           child: Text(
                             "En",
                             style: Theme.of(context).textTheme.headlineMedium,
@@ -83,24 +84,12 @@ class _HomeTabState extends State<HomeTab> {
                   ],
                 ),
               ),
-              DefaultTabController(
-                length: CategoryModels.categoriesWithAll.length,
-                child: TabBar(
-                  isScrollable: true,
-                  indicatorColor: Colors.transparent,
-                  tabs: CategoryModels.categoriesWithAll
-                      .map(
-                        (category) => TabItem(
-                      selectedTabBgColor: ColorsManager.whiteBlue,
-                      selectedTabFgColor: ColorsManager.blue,
-                      unSelectedTabBgColor: Colors.transparent,
-                      unSelectedTabFgColor: ColorsManager.whiteBlue,
-                      isSelected: selectedIndex == CategoryModels.categoriesWithAll.indexOf(category),
-                      category: category,
-                    ),
-                  )
-                      .toList(),
-                ),
+              CustomTabBar(
+                categories: CategoryModels.getCategoriesWithAll(context),
+                selectedBgColor: ColorsManager.whiteBlue,
+                selectedFgColor: ColorsManager.blue,
+                unSelectedBgColor: Colors.transparent,
+                unSelectedFgColor: ColorsManager.whiteBlue,
               ),
             ],
           ),
@@ -111,7 +100,7 @@ class _HomeTabState extends State<HomeTab> {
               event: EventModel(
                 timeOfDay: TimeOfDay.now(),
                 dateTime: DateTime.now(),
-                category: CategoryModels.categoriesWithAll[3],
+                category: CategoryModels.getCategoriesWithAll(context)[3],
                 title: "Meeting for Updating The Development Method",
                 description: "Meeting for Updating The Development Method",
               ),

@@ -6,6 +6,7 @@ import 'package:evently_app/features/main_layout/tabs/porfile/profile_tab.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/resources/colors_manager.dart';
+import '../../l10n/app_localizations.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -17,6 +18,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   final List<Widget> tabs = [HomeTab(), MapTab(), FavoriteTab(), ProfileTab()];
   int selectedIndex = 0;
+  late AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +49,25 @@ class _MainLayoutState extends State<MainLayout> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
-            label: "Home",
+            label: appLocalizations.home,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               selectedIndex == 1 ? Icons.location_on : Icons.location_on_outlined,
             ),
-            label: "Map",
+            label: appLocalizations.map,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               selectedIndex == 2 ? Icons.favorite : Icons.favorite_border,
             ),
-            label: "Favorite",
+            label: appLocalizations.favourite,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               selectedIndex == 3 ? Icons.person : Icons.person_2_outlined,
             ),
-            label: "Profile",
+            label: appLocalizations.profile,
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../models/category_models.dart';
 
 class FavoriteTab extends StatelessWidget {
@@ -12,6 +13,7 @@ class FavoriteTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return SafeArea(
       child: Column(
         children: [
@@ -28,7 +30,7 @@ class FavoriteTab extends StatelessWidget {
                   borderSide: BorderSide(color: ColorsManager.blue),
                 ),
                 prefixIcon: Icon(Icons.search, color: ColorsManager.blue),
-                hintText: "Search for Event",
+                hintText: appLocalizations.search_for_event,
                 hintStyle: GoogleFonts.inter(
                   color: ColorsManager.blue,
                   fontSize: 14.sp,
@@ -42,7 +44,7 @@ class FavoriteTab extends StatelessWidget {
               itemBuilder: (context, index)=>EventItem(event: EventModel(
                 timeOfDay: TimeOfDay.now(),
                 dateTime: DateTime.now(),
-                category: CategoryModels.categoriesWithAll[3],
+                category: CategoryModels.getCategoriesWithAll(context)[3],
                 title: "Meeting for Updating The Development Method",
                 description: "Meeting for Updating The Development Method",
               ),),

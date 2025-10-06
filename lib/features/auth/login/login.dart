@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/routes_manager/routes_manager.dart';
+import '../../../l10n/app_localizations.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -32,6 +33,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -43,7 +45,7 @@ class _LoginState extends State<Login> {
               Image.asset(ImageAssets.logo, width: 136.w, height: 186.h),
               SizedBox(height: 24.h),
               CustomTextFormField(
-                label: "E-mail",
+                label: appLocalizations.email,
                 validator: Validator.validateEmail,
                 controller: _emailController,
                 prefixIcon: Icons.email,
@@ -52,7 +54,7 @@ class _LoginState extends State<Login> {
               SizedBox(height: 16.h),
               CustomTextFormField(
                 isSecure: securePassword,
-                label: "Password",
+                label: appLocalizations.password,
                 validator: Validator.validatePassword,
                 controller: _passwordController,
                 prefixIcon: Icons.lock,
@@ -66,22 +68,22 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 16.h),
               CustomTextButton(
-                text: "Forget Password",
+                text: appLocalizations.forget_password,
                 textAlign: TextAlign.right,
                 onTap: () {},
               ),
               SizedBox(height: 24.h),
-              CustomElevatedButton(title: "Login", onPressed: _login),
+              CustomElevatedButton(title: appLocalizations.login, onPressed: _login),
               SizedBox(height: 24.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don’t Have Account ? ",
+                    "${appLocalizations.dont_have_account} ",
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   CustomTextButton(
-                    text: " Create Account",
+                    text: appLocalizations.create_account,
                     onTap: () {
                       Navigator.pushReplacementNamed(
                         context,
@@ -103,7 +105,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   Text(
-                    "Or",
+                    appLocalizations.or,
                     style: GoogleFonts.inter(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
@@ -136,7 +138,7 @@ class _LoginState extends State<Login> {
                     Image.asset(ImageAssets.google),
                     SizedBox(width: 10.w),
                     Text(
-                      "Login With Google",
+                      appLocalizations.login_with_google,
                       style: GoogleFonts.inter(
                         color: ColorsManager.blue,
                         fontSize: 20.sp,

@@ -5,6 +5,7 @@ import 'package:evently_app/core/widgets/custom_elevated_button.dart';
 import 'package:evently_app/core/widgets/custom_text_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
 import 'package:evently_app/features/auth/login/login.dart';
+import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -35,9 +36,10 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("Register")),
+      appBar: AppBar(title: Text(appLocalizations.register)),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 8,
@@ -54,14 +56,14 @@ class _RegisterState extends State<Register> {
                 CustomTextFormField(
                   controller: _nameController,
                   validator: Validator.validateName,
-                  label: "Name",
+                  label: appLocalizations.name,
                   prefixIcon: Icons.person_3_rounded,
                 ),
                 SizedBox(height: 16.h),
                 CustomTextFormField(
                   controller: _emailController,
                   validator: Validator.validateEmail,
-                  label: "E-mail",
+                  label: appLocalizations.email,
                   prefixIcon: Icons.email,
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -70,7 +72,7 @@ class _RegisterState extends State<Register> {
                   controller: _passwordController,
                   validator: Validator.validatePassword,
                   isSecure: securePassword,
-                  label: "Password",
+                  label: appLocalizations.password,
                   prefixIcon: Icons.lock,
                   suffixIcon: IconButton(
                     onPressed: _onPasswordIconClicked,
@@ -85,7 +87,7 @@ class _RegisterState extends State<Register> {
                   controller: _rePasswordController,
                   validator: Validator.validateRePassword,
                   isSecure: secureRePassword,
-                  label: "Re-Password",
+                  label: appLocalizations.re_password,
                   prefixIcon: Icons.lock,
                   suffixIcon: IconButton(
                     onPressed: _onRePasswordIconClicked,
@@ -99,7 +101,7 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 16.h),
                 CustomElevatedButton(
-                  title: "Create Account",
+                  title: appLocalizations.create_account,
                   onPressed: _createAccount,
                 ),
                 SizedBox(height: 16.h),
@@ -107,10 +109,10 @@ class _RegisterState extends State<Register> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already Have Account ? ",
+                      "${appLocalizations.already_have_account} ",
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                    CustomTextButton(text: "Login", onTap: () {
+                    CustomTextButton(text: appLocalizations.login, onTap: () {
                       Navigator.pushReplacementNamed(context, RoutesManager.login);
                     }),
                   ],

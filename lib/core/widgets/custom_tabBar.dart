@@ -37,10 +37,10 @@ class _CustomTabBarState extends State<CustomTabBar> {
             selectedIndex = index;
           });
         },
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: REdgeInsets.symmetric(vertical: 16),
         labelPadding: EdgeInsets.symmetric(horizontal: 12.w),
         isScrollable: true,
-        indicator: const BoxDecoration(),
+        indicator: BoxDecoration(),
         tabs: List.generate(widget.categories.length, (index) {
           final category = widget.categories[index];
           return TabItem(
