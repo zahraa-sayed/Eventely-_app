@@ -51,7 +51,7 @@ class _HomeTabState extends State<HomeTab> {
                         Row(
                           children: [
                             Icon(
-                              Icons.location_on_outlined,
+                              Icons.location_on,
                               color: ColorsManager.white,
                             ),
                             SizedBox(width: 4.w),

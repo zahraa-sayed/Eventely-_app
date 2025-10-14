@@ -9,11 +9,13 @@ class DropDownItem extends StatelessWidget {
     required this.label,
     required this.menuItems,
     required this.selectedItem,
+    required this.onChanged,
   });
 
   final String label;
   final List<String> menuItems;
   final String selectedItem;
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class DropDownItem extends StatelessWidget {
                       child: Text(value),
                     );
                   }).toList(),
-                  onChanged: (newTheme) {},
+                  onChanged: onChanged,
                 ),
               ],
             ),

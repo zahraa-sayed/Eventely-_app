@@ -1,4 +1,4 @@
-import 'package:evently_app/core/assets_manager/assets_manager.dart';
+import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/resources/validator.dart';
 import 'package:evently_app/core/widgets/custom_elevated_button.dart';

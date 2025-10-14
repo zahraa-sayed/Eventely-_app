@@ -4,8 +4,6 @@ import 'package:evently_app/features/main_layout/tabs/home/home_tab.dart';
 import 'package:evently_app/features/main_layout/tabs/map/map_tab.dart';
 import 'package:evently_app/features/main_layout/tabs/porfile/profile_tab.dart';
 import 'package:flutter/material.dart';
-
-import '../../core/resources/colors_manager.dart';
 import '../../l10n/app_localizations.dart';
 
 class MainLayout extends StatefulWidget {

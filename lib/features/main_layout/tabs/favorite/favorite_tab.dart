@@ -18,7 +18,7 @@ class FavoriteTab extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
+            margin: REdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(

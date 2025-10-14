@@ -1,11 +1,14 @@
-import 'package:evently_app/core/assets_manager/assets_manager.dart';
+import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/features/main_layout/tabs/porfile/drop_down_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../../providers/language_provider.dart';
+import '../../../../providers/theme_provider.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -13,6 +16,8 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    LanguageProvider languageProvider = Provider.of<LanguageProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -30,7 +35,7 @@ class ProfileTab extends StatelessWidget {
                 Image.asset(ImageAssets.routeProfile),
                 SizedBox(width: 16.w),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: REdgeInsets.all(8.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -59,15 +64,21 @@ class ProfileTab extends StatelessWidget {
         ),
         SizedBox(height: 24.h),
         DropDownItem(
+          onChanged: (newTheme){
+            themeProvider.changeAppTheme(newTheme == appLocalizations.light ? ThemeMode.light : ThemeMode.dark);
+          },
           label: appLocalizations.theme,
           menuItems: [appLocalizations.light, appLocalizations.dark],
-          selectedItem: appLocalizations.light,
+          selectedItem: themeProvider.isDark ? appLocalizations.dark : appLocalizations.light,
         ),
         SizedBox(height: 16.h),
         DropDownItem(
+          onChanged: (newLang){
+            languageProvider.changeAppLang(newLang == appLocalizations.english ? "en" : "ar");
+          },
           label: appLocalizations.language,
           menuItems: [appLocalizations.english, appLocalizations.arabic],
-          selectedItem: appLocalizations.english,
+          selectedItem:languageProvider.isEnglish ? "English" : appLocalizations.arabic,
         ),
         Spacer(flex: 6,),
         Container(

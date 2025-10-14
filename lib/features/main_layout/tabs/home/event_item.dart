@@ -1,4 +1,4 @@
-import 'package:evently_app/core/assets_manager/assets_manager.dart';
+import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/extensions/date_time_ex.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/models/event_model.dart';
