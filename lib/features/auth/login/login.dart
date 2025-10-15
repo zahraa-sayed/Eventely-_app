@@ -1,9 +1,12 @@
+import 'package:evently_app/core/UI_Utils/UI_Utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/resources/validator.dart';
 import 'package:evently_app/core/widgets/custom_elevated_button.dart';
 import 'package:evently_app/core/widgets/custom_text_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
+import 'package:evently_app/firebase_service/firebase_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -73,7 +76,10 @@ class _LoginState extends State<Login> {
                 onTap: () {},
               ),
               SizedBox(height: 24.h),
-              CustomElevatedButton(title: appLocalizations.login, onPressed: _login),
+              CustomElevatedButton(
+                title: appLocalizations.login,
+                onPressed: _login,
+              ),
               SizedBox(height: 24.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -168,7 +174,23 @@ class _LoginState extends State<Login> {
     });
   }
 
-  void _login() {
-    if(_formKey.currentState?.validate() == false) return;
+  void _login() async {
+    if (_formKey.currentState?.validate() == false) return;
+    try {
+      UIUtils.showLoading(context);
+      UserCredential userCredential = await FirebaseService.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+      UIUtils.hideDialog(context);
+      UIUtils.showToastMessage("Logged-In Successfully", ColorsManager.green);
+      Navigator.pushReplacementNamed(context, RoutesManager.mainLayout);
+    } on FirebaseAuthException catch (exception) {
+      UIUtils.hideDialog(context);
+      UIUtils.showToastMessage("Wrong email or password", ColorsManager.red);
+    } catch (exception) {
+      UIUtils.hideDialog(context);
+      UIUtils.showToastMessage("Filed to login-in", ColorsManager.red);
+    }
   }
 }

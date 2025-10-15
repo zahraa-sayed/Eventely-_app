@@ -1,11 +1,15 @@
+import 'dart:developer';
+import 'package:evently_app/core/UI_Utils/UI_Utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
+import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/resources/validator.dart';
 import 'package:evently_app/core/routes_manager/routes_manager.dart';
 import 'package:evently_app/core/widgets/custom_elevated_button.dart';
 import 'package:evently_app/core/widgets/custom_text_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
-import 'package:evently_app/features/auth/login/login.dart';
+import 'package:evently_app/firebase_service/firebase_service.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -30,8 +34,8 @@ class _RegisterState extends State<Register> {
     super.initState();
     _nameController = TextEditingController();
     _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _rePasswordController = TextEditingController();
+    _passwordController = TextEditingController(text: "Zaa12345678@");
+    _rePasswordController = TextEditingController(text: "Zaa12345678@");
   }
 
   @override
@@ -112,9 +116,15 @@ class _RegisterState extends State<Register> {
                       "${appLocalizations.already_have_account} ",
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                    CustomTextButton(text: appLocalizations.login, onTap: () {
-                      Navigator.pushReplacementNamed(context, RoutesManager.login);
-                    }),
+                    CustomTextButton(
+                      text: appLocalizations.login,
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          RoutesManager.login,
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -124,6 +134,7 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+
   void _onPasswordIconClicked() {
     setState(() {
       securePassword = !securePassword;
@@ -136,8 +147,27 @@ class _RegisterState extends State<Register> {
     });
   }
 
-  void _createAccount() {
+  void _createAccount() async {
     if (_formKey.currentState?.validate() == false) return;
+    try {
+      UIUtils.showLoading(context);
+      UserCredential userCredential = await FirebaseService.register(
+        _emailController.text,
+        _passwordController.text,
+      );
+      UIUtils.hideDialog(context);
+      UIUtils.showToastMessage(
+        "User Registered Successfully",
+        ColorsManager.green,
+      );
+      Navigator.pushReplacementNamed(context, RoutesManager.login);
+    } on FirebaseAuthException catch (exception) {
+      UIUtils.hideDialog(context);
+      UIUtils.showToastMessage(exception.code, ColorsManager.red);
+    } catch (exception) {
+      UIUtils.hideDialog(context);
+      UIUtils.showToastMessage("Filed to register", ColorsManager.red);
+    }
   }
 
   @override

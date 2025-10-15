@@ -1,3 +1,4 @@
+import 'package:evently_app/core/extensions/date_time_ex.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/widgets/custom_elevated_button.dart';
@@ -20,7 +21,8 @@ class CreateEvent extends StatefulWidget {
 class _CreateEventState extends State<CreateEvent> {
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
-  late AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(appLocalizations.create_event)),
       body: Padding(
@@ -60,10 +63,13 @@ class _CreateEventState extends State<CreateEvent> {
                 categories: CategoryModels.getCategories(context),
               ),
               SizedBox(height: 16.h),
-              Text(appLocalizations.title, style: Theme.of(context).textTheme.titleSmall),
+              Text(
+                appLocalizations.title,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
               SizedBox(height: 8.h),
               CustomTextFormField(
-                hint:appLocalizations.event_title,
+                hint: appLocalizations.event_title,
                 validator: (input) {},
                 controller: _titleController,
                 prefixIcon: Icons.edit_calendar_sharp,
@@ -86,19 +92,13 @@ class _CreateEventState extends State<CreateEvent> {
                   Icon(Icons.date_range),
                   SizedBox(width: 4.w),
                   Text(
-                    appLocalizations.event_date,
+                    selectedDate.toFormattedDate,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   Spacer(),
                   CustomTextButton(
                     text: appLocalizations.choose_date,
-                    onTap: () {
-                      showDatePicker(
-                        context: context,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(Duration(days: 365)),
-                      );
-                    },
+                    onTap: _selectEventDate,
                   ),
                 ],
               ),
@@ -108,23 +108,21 @@ class _CreateEventState extends State<CreateEvent> {
                   Icon(Icons.access_time),
                   SizedBox(width: 4.w),
                   Text(
-                    appLocalizations.event_time,
+                    selectedDate.toFormattedTime,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   Spacer(),
                   CustomTextButton(
                     text: appLocalizations.choose_time,
-                    onTap: () {
-                      showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                    },
+                    onTap: _selectedEventTime,
                   ),
                 ],
               ),
               SizedBox(height: 16.h),
-              Text(appLocalizations.location, style: Theme.of(context).textTheme.titleSmall),
+              Text(
+                appLocalizations.location,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
               SizedBox(height: 8.h),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
@@ -148,7 +146,7 @@ class _CreateEventState extends State<CreateEvent> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 8.w,),
+                    SizedBox(width: 8.w),
                     Text(
                       appLocalizations.choose_event_location,
                       style: Theme.of(context).textTheme.headlineMedium,
@@ -163,11 +161,40 @@ class _CreateEventState extends State<CreateEvent> {
                 ),
               ),
               SizedBox(height: 16.h),
-              CustomElevatedButton(title: appLocalizations.add_event, onPressed: () {}),
+              CustomElevatedButton(
+                title: appLocalizations.add_event,
+                onPressed: () {},
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _selectEventDate() async {
+    selectedDate =
+        await showDatePicker(
+          context: context,
+          firstDate: DateTime.now(),
+          lastDate: DateTime.now().add(Duration(days: 365)),
+        ) ??
+        selectedDate;
+    selectedDate = selectedDate.copyWith(
+      hour: selectedTime.hour,
+      minute: selectedTime.minute,
+    );
+    setState(() {});
+  }
+
+  void _selectedEventTime() async {
+    selectedTime =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now()) ??
+        selectedTime;
+    selectedDate = selectedDate.copyWith(
+      hour: selectedTime.hour,
+      minute: selectedTime.minute,
+    );
+    setState(() {});
   }
 }

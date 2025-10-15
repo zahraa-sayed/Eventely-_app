@@ -3,8 +3,11 @@ import 'package:evently_app/core/widgets/custom_tabBar.dart';
 import 'package:evently_app/features/main_layout/tabs/home/event_item.dart';
 import 'package:evently_app/models/category_models.dart';
 import 'package:evently_app/models/event_model.dart';
+import 'package:evently_app/providers/language_provider.dart';
+import 'package:evently_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
@@ -17,10 +20,12 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
-  late AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    LanguageProvider languageProvider = Provider.of<LanguageProvider>(context);
     return Column(
       children: [
         Container(
@@ -65,17 +70,21 @@ class _HomeTabState extends State<HomeTab> {
                     ),
                     Spacer(),
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.light_mode, color: ColorsManager.white),
+                      onPressed: () {
+                        themeProvider.changeAppTheme(themeProvider.isDark ? ThemeMode.light : ThemeMode.dark);
+                      },
+                      icon: Icon(themeProvider.isDark ? Icons.dark_mode_rounded : Icons.light_mode, color: ColorsManager.white),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        languageProvider.changeAppLang(languageProvider.isEnglish ? "ar" : "en");
+                      },
                       child: Card(
                         color: ColorsManager.white,
                         child: Padding(
                           padding: REdgeInsets.all(8.0),
                           child: Text(
-                            "En",
+                            languageProvider.isEnglish ? "En" : "Ar",
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),

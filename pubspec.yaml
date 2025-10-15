@@ -41,6 +41,11 @@ dependencies:
     sdk: flutter
   provider: ^6.1.5+1
   shared_preferences: ^2.5.3
+  firebase_auth: ^6.1.1
+  firebase_core: ^4.2.0
+  awesome_dialog: ^3.3.0
+  adaptive_dialog: ^2.4.2
+  fluttertoast: ^9.0.0
 
 dev_dependencies:
   flutter_test:
