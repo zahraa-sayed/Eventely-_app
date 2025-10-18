@@ -3,6 +3,7 @@ import 'package:evently_app/core/widgets/custom_tabBar.dart';
 import 'package:evently_app/features/main_layout/tabs/home/event_item.dart';
 import 'package:evently_app/models/category_models.dart';
 import 'package:evently_app/models/event_model.dart';
+import 'package:evently_app/models/user_model.dart';
 import 'package:evently_app/providers/language_provider.dart';
 import 'package:evently_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _HomeTabState extends State<HomeTab> {
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         Text(
-                          "User Name",
+                          UserModel.currentUser!.name,
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
                         SizedBox(height: 8.h),

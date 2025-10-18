@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:evently_app/core/UI_Utils/UI_Utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
@@ -9,6 +8,7 @@ import 'package:evently_app/core/widgets/custom_text_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
 import 'package:evently_app/firebase_service/firebase_service.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -154,6 +154,13 @@ class _RegisterState extends State<Register> {
       UserCredential userCredential = await FirebaseService.register(
         _emailController.text,
         _passwordController.text,
+      );
+      await FirebaseService.addUserToFireStore(
+        UserModel(
+          id: userCredential.user!.uid,
+          name: _nameController.text,
+          email: _emailController.text,
+        ),
       );
       UIUtils.hideDialog(context);
       UIUtils.showToastMessage(
