@@ -1,3 +1,4 @@
+import 'package:evently_app/core/UI_Utils/UI_Utils.dart';
 import 'package:evently_app/core/extensions/date_time_ex.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
@@ -5,7 +6,10 @@ import 'package:evently_app/core/widgets/custom_elevated_button.dart';
 import 'package:evently_app/core/widgets/custom_tabBar.dart';
 import 'package:evently_app/core/widgets/custom_text_button.dart';
 import 'package:evently_app/core/widgets/custom_text_form_field.dart';
+import 'package:evently_app/firebase_service/firebase_service.dart';
 import 'package:evently_app/models/category_models.dart';
+import 'package:evently_app/models/event_model.dart';
+import 'package:evently_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,6 +27,9 @@ class _CreateEventState extends State<CreateEvent> {
   late final TextEditingController _descriptionController;
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  late CategoryModels selectedCategory = CategoryModels.getCategories(
+    context,
+  )[0];
 
   @override
   void initState() {
@@ -56,6 +63,11 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               SizedBox(height: 16.h),
               CustomTabBar(
+                onCategoryItemClicked: (category) {
+                  setState(() {
+                    selectedCategory = category;
+                  });
+                },
                 selectedBgColor: ColorsManager.blue,
                 selectedFgColor: ColorsManager.whiteBlue,
                 unSelectedBgColor: Colors.transparent,
@@ -163,13 +175,29 @@ class _CreateEventState extends State<CreateEvent> {
               SizedBox(height: 16.h),
               CustomElevatedButton(
                 title: appLocalizations.add_event,
-                onPressed: () {},
+                onPressed: _createEvent,
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _createEvent() async {
+    EventModel event = EventModel(
+      eventId: "",
+      userId: UserModel.currentUser!.id,
+      dateTime: selectedDate,
+      category: selectedCategory,
+      title: _titleController.text,
+      description: _descriptionController.text,
+    );
+    UIUtils.showLoading(context);
+    await FirebaseService.addEventToFireStore(event, context);
+    UIUtils.hideDialog(context);
+    UIUtils.showToastMessage("Event Created Successfully", ColorsManager.green);
+    Navigator.pop(context);
   }
 
   void _selectEventDate() async {

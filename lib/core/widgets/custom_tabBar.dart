@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,6 +13,7 @@ class CustomTabBar extends StatefulWidget {
     required this.unSelectedBgColor,
     required this.unSelectedFgColor,
     required this.categories,
+    this.onCategoryItemClicked,
   });
 
   final Color selectedBgColor;
@@ -19,6 +21,7 @@ class CustomTabBar extends StatefulWidget {
   final Color selectedFgColor;
   final Color unSelectedFgColor;
   final List<CategoryModels> categories;
+  final void Function(CategoryModels)? onCategoryItemClicked;
 
   @override
   State<CustomTabBar> createState() => _CustomTabBarState();
@@ -33,6 +36,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
       length: widget.categories.length,
       child: TabBar(
         onTap: (index) {
+          widget.onCategoryItemClicked?.call(widget.categories[index]);
           setState(() {
             selectedIndex = index;
           });

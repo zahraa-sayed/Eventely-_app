@@ -42,7 +42,8 @@ class FavoriteTab extends StatelessWidget {
           SizedBox(height: 16.h,),
           Expanded(child: ListView.separated(
               itemBuilder: (context, index)=>EventItem(event: EventModel(
-                timeOfDay: TimeOfDay.now(),
+                userId: "",
+                eventId: "",
                 dateTime: DateTime.now(),
                 category: CategoryModels.getCategoriesWithAll(context)[3],
                 title: "Meeting for Updating The Development Method",

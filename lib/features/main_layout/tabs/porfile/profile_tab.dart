@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../../models/user_model.dart';
 import '../../../../providers/language_provider.dart';
 import '../../../../providers/theme_provider.dart';
 
@@ -47,7 +48,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "User Name",
+                        UserModel.currentUser!.name,
                         style: GoogleFonts.inter(
                           color: ColorsManager.white,
                           fontSize: 24.sp,
@@ -55,7 +56,7 @@ class _ProfileTabState extends State<ProfileTab> {
                         ),
                       ),
                       Text(
-                        "user_name.route@gmail.com",
+                        UserModel.currentUser!.email,
                         style: GoogleFonts.inter(
                           color: ColorsManager.white,
                           fontSize: 16,

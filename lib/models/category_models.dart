@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../l10n/app_localizations.dart';
 
 class CategoryModels {
@@ -30,6 +29,7 @@ class CategoryModels {
       CategoryModels(id: "9", name: appLocalizations.book_club, iconData: Icons.book_rounded, imagePath: ""),
     ];
   }
+
   static List<CategoryModels> getCategories(BuildContext context){
     AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return [

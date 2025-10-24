@@ -1,6 +1,7 @@
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/widgets/custom_tabBar.dart';
 import 'package:evently_app/features/main_layout/tabs/home/event_item.dart';
+import 'package:evently_app/firebase_service/firebase_service.dart';
 import 'package:evently_app/models/category_models.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:evently_app/models/user_model.dart';
@@ -8,6 +9,7 @@ import 'package:evently_app/providers/language_provider.dart';
 import 'package:evently_app/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../l10n/app_localizations.dart';
@@ -21,6 +23,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
+  late CategoryModels selectedCategory = CategoryModels.getCategoriesWithAll(context)[0];
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +59,7 @@ class _HomeTabState extends State<HomeTab> {
                         SizedBox(height: 8.h),
                         Row(
                           children: [
-                            Icon(
-                              Icons.location_on,
-                              color: ColorsManager.white,
-                            ),
+                            Icon(Icons.location_on, color: ColorsManager.white),
                             SizedBox(width: 4.w),
                             Text(
                               "Cairo , Egypt",
@@ -72,13 +72,24 @@ class _HomeTabState extends State<HomeTab> {
                     Spacer(),
                     IconButton(
                       onPressed: () {
-                        themeProvider.changeAppTheme(themeProvider.isDark ? ThemeMode.light : ThemeMode.dark);
+                        themeProvider.changeAppTheme(
+                          themeProvider.isDark
+                              ? ThemeMode.light
+                              : ThemeMode.dark,
+                        );
                       },
-                      icon: Icon(themeProvider.isDark ? Icons.dark_mode_rounded : Icons.light_mode, color: ColorsManager.white),
+                      icon: Icon(
+                        themeProvider.isDark
+                            ? Icons.dark_mode_rounded
+                            : Icons.light_mode,
+                        color: ColorsManager.white,
+                      ),
                     ),
                     InkWell(
                       onTap: () {
-                        languageProvider.changeAppLang(languageProvider.isEnglish ? "ar" : "en");
+                        languageProvider.changeAppLang(
+                          languageProvider.isEnglish ? "ar" : "en",
+                        );
                       },
                       child: Card(
                         color: ColorsManager.white,
@@ -95,6 +106,12 @@ class _HomeTabState extends State<HomeTab> {
                 ),
               ),
               CustomTabBar(
+                onCategoryItemClicked: (category){
+                  selectedCategory = category;
+                  setState(() {
+
+                  });
+                },
                 categories: CategoryModels.getCategoriesWithAll(context),
                 selectedBgColor: ColorsManager.whiteBlue,
                 selectedFgColor: ColorsManager.blue,
@@ -104,20 +121,28 @@ class _HomeTabState extends State<HomeTab> {
             ],
           ),
         ),
-        Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) => EventItem(
-              event: EventModel(
-                timeOfDay: TimeOfDay.now(),
-                dateTime: DateTime.now(),
-                category: CategoryModels.getCategoriesWithAll(context)[3],
-                title: "Meeting for Updating The Development Method",
-                description: "Meeting for Updating The Development Method",
-              ),
-            ),
-            separatorBuilder: (context, index) => SizedBox(height: 16.h),
-            itemCount: 20,
-          ),
+        FutureBuilder(
+          future: FirebaseService.getEvents(context, selectedCategory),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text(snapshot.hasError.toString()));
+            }
+            List<EventModel> events = snapshot.data ?? [];
+            return Expanded(
+              child: events.isEmpty
+                  ? Center(child: Text("No Events", style: TextStyle(color: ColorsManager.black, fontSize: 20.sp),))
+                  : ListView.separated(
+                      itemBuilder: (context, index) =>
+                          EventItem(event: events[index]),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 16.h),
+                      itemCount: events.length,
+                    ),
+            );
+          },
         ),
       ],
     );
