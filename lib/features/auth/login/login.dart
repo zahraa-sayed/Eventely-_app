@@ -197,6 +197,7 @@ class _LoginState extends State<Login> {
       UIUtils.showToastMessage("Wrong email or password", ColorsManager.red);
     } catch (exception) {
       UIUtils.hideDialog(context);
+      print(exception.toString());
       UIUtils.showToastMessage("Filed to login-in", ColorsManager.red);
     }
   }

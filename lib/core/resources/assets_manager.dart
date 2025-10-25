@@ -9,5 +9,7 @@ abstract class ImageAssets {
   static const String sport = "$base/sport.png";
   static const String workShop = "$base/workShop.png";
   static const String routeProfile = "$base/profile_route-1.png";
-
+  static const String gaming = "$base/gaming.png";
+  static const String exhibition = "$base/exhibition.png";
+  static const String eating = "$base/eating.png";
 }

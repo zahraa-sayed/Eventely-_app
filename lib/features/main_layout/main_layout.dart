@@ -20,11 +20,14 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom != 0.0;
+    appLocalizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       extendBody: true,
       body: tabs[selectedIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _buildFad(),
+      floatingActionButton:isKeyboardOpen ? null : _buildFad(),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }

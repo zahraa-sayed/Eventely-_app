@@ -155,25 +155,27 @@ class _RegisterState extends State<Register> {
         _emailController.text,
         _passwordController.text,
       );
-      await FirebaseService.addUserToFireStore(
-        UserModel(
-          id: userCredential.user!.uid,
-          name: _nameController.text,
-          email: _emailController.text,
-        ),
+      final newUser = UserModel(
+        id: userCredential.user!.uid,
+        name: _nameController.text,
+        email: _emailController.text,
+        favouriteEventsIds: [],
       );
+
+      await FirebaseService.addUserToFireStore(newUser);
+      UserModel.currentUser = newUser;
       UIUtils.hideDialog(context);
       UIUtils.showToastMessage(
         "User Registered Successfully",
         ColorsManager.green,
       );
-      Navigator.pushReplacementNamed(context, RoutesManager.login);
+      Navigator.pushReplacementNamed(context, RoutesManager.mainLayout);
     } on FirebaseAuthException catch (exception) {
       UIUtils.hideDialog(context);
       UIUtils.showToastMessage(exception.code, ColorsManager.red);
     } catch (exception) {
       UIUtils.hideDialog(context);
-      UIUtils.showToastMessage("Filed to register", ColorsManager.red);
+      UIUtils.showToastMessage("Failed to register", ColorsManager.red);
     }
   }
 

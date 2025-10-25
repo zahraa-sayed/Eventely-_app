@@ -48,5 +48,6 @@
 "exhibition": "Exhibition",
 "english": "English",
 "arabic": "Arabic",
-"location": "Location"
+"location": "Location",
+"no_event": "No Events"
 }

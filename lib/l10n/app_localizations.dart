@@ -397,6 +397,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Location'**
   String get location;
+
+  /// No description provided for @no_event.
+  ///
+  /// In en, this message translates to:
+  /// **'No Events'**
+  String get no_event;
 }
 
 class _AppLocalizationsDelegate

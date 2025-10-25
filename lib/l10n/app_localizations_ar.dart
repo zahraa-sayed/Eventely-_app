@@ -157,4 +157,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get location => 'الموقع';
+
+  @override
+  String get no_event => 'لا أحداث';
 }

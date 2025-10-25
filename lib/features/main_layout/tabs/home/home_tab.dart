@@ -23,7 +23,9 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int selectedIndex = 0;
-  late CategoryModels selectedCategory = CategoryModels.getCategoriesWithAll(context)[0];
+  late CategoryModels selectedCategory = CategoryModels.getCategoriesWithAll(
+    context,
+  )[0];
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +108,9 @@ class _HomeTabState extends State<HomeTab> {
                 ),
               ),
               CustomTabBar(
-                onCategoryItemClicked: (category){
+                onCategoryItemClicked: (category) {
                   selectedCategory = category;
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
                 categories: CategoryModels.getCategoriesWithAll(context),
                 selectedBgColor: ColorsManager.whiteBlue,
@@ -121,8 +121,8 @@ class _HomeTabState extends State<HomeTab> {
             ],
           ),
         ),
-        FutureBuilder(
-          future: FirebaseService.getEvents(context, selectedCategory),
+        StreamBuilder(
+          stream: FirebaseService.getEventWithRealTimeUpdates(context, selectedCategory),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -133,10 +133,23 @@ class _HomeTabState extends State<HomeTab> {
             List<EventModel> events = snapshot.data ?? [];
             return Expanded(
               child: events.isEmpty
-                  ? Center(child: Text("No Events", style: TextStyle(color: ColorsManager.black, fontSize: 20.sp),))
+                  ? Center(
+                      child: Text(
+                        appLocalizations.no_event,
+                        style: TextStyle(
+                          color: ColorsManager.blue,
+                          fontSize: 20.sp,
+                        ),
+                      ),
+                    )
                   : ListView.separated(
-                      itemBuilder: (context, index) =>
-                          EventItem(event: events[index]),
+                      itemBuilder: (context, index) => EventItem(
+                        event: events[index],
+                        favouriteEvent: UserModel
+                            .currentUser!
+                            .favouriteEventsIds
+                            .contains(events[index].eventId),
+                      ),
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 16.h),
                       itemCount: events.length,

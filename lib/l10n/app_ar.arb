@@ -48,5 +48,6 @@
   "exhibition": "معرض",
   "english": "الانجليزية",
   "arabic": "العربية",
-  "location": "الموقع"
+  "location": "الموقع",
+  "no_event": "لا أحداث"
 }

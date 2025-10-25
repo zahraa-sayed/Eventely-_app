@@ -25,9 +25,9 @@ class FirebaseService {
     CollectionReference<UserModel> usersCollectionRef = db
         .collection(usersCollection)
         .withConverter<UserModel>(
-      fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
-      toFirestore: (user, _) => user.toJson(),
-    );
+          fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()!),
+          toFirestore: (user, _) => user.toJson(),
+        );
     return usersCollectionRef;
   }
 
@@ -54,20 +54,23 @@ class FirebaseService {
   }
 
   static CollectionReference<EventModel> getEventsCollection(
-      BuildContext context,) {
+    BuildContext context,
+  ) {
     FirebaseFirestore db = FirebaseFirestore.instance;
     CollectionReference<EventModel> eventsCollection = db
         .collection("Events")
         .withConverter<EventModel>(
-      fromFirestore: (snapshot, _) =>
-          EventModel.fromJson(snapshot.data()!, context),
-      toFirestore: (event, _) => event.toJson(),
-    );
+          fromFirestore: (snapshot, _) =>
+              EventModel.fromJson(snapshot.data()!, context),
+          toFirestore: (event, _) => event.toJson(),
+        );
     return eventsCollection;
   }
 
-  static Future<void> addEventToFireStore(EventModel event,
-      BuildContext context,) {
+  static Future<void> addEventToFireStore(
+    EventModel event,
+    BuildContext context,
+  ) {
     CollectionReference<EventModel> eventsCollection = getEventsCollection(
       context,
     );
@@ -76,13 +79,15 @@ class FirebaseService {
     return eventDocument.set(event);
   }
 
-  static Future<List<EventModel>> getEvents(BuildContext context,
-      CategoryModels category,) async {
+  static Future<List<EventModel>> getEvents(
+    BuildContext context,
+    CategoryModels category,
+  ) async {
     CollectionReference<EventModel> eventsCollection = getEventsCollection(
       context,
     );
-    QuerySnapshot<EventModel> querySnapshot = await eventsCollection.where(
-        "categoryId", isEqualTo: category.id == "0" ? null : category.id)
+    QuerySnapshot<EventModel> querySnapshot = await eventsCollection
+        .where("categoryId", isEqualTo: category.id == "0" ? null : category.id)
         .orderBy("dateTime")
         .get();
     List<EventModel> events = querySnapshot.docs
@@ -97,5 +102,65 @@ class FirebaseService {
     //       .toList();
     //   return events;
     // }
+  }
+
+  static Stream<List<EventModel>> getEventWithRealTimeUpdates(
+    BuildContext context,
+    CategoryModels category,
+  ) async* {
+    CollectionReference<EventModel> eventsCollection = getEventsCollection(
+      context,
+    );
+    Stream<QuerySnapshot<EventModel>> collectionSnapshot = eventsCollection
+        .where("categoryId", isEqualTo: category.id == "0" ? null : category.id)
+        .orderBy("dateTime")
+        .snapshots();
+    var events = collectionSnapshot.map(
+      (snapshot) =>
+          snapshot.docs.map((docSnapshot) => docSnapshot.data()).toList(),
+    );
+    yield* events;
+  }
+
+  static Future<void> addEventToFavourite(EventModel event) {
+    UserModel currentUser = UserModel.currentUser!;
+    currentUser.favouriteEventsIds.add(event.eventId);
+    CollectionReference<UserModel> userCollection = getUsersCollection();
+    DocumentReference<UserModel> userDocument = userCollection.doc(
+      currentUser.id,
+    );
+    return userDocument.set(currentUser);
+  }
+
+  static Future<void> removeEventFromFavourite(EventModel event) {
+    UserModel currentUser = UserModel.currentUser!;
+    currentUser.favouriteEventsIds.remove(event.eventId);
+    CollectionReference<UserModel> userCollection = getUsersCollection();
+    DocumentReference<UserModel> userDocument = userCollection.doc(
+      currentUser.id,
+    );
+    return userDocument.set(currentUser);
+  }
+
+  static Future<List<EventModel>> getFavouriteEvents(
+    BuildContext context,
+  ) async {
+    CollectionReference<EventModel> eventsCollection = getEventsCollection(
+      context,
+    );
+    QuerySnapshot<EventModel> querySnapshot = await eventsCollection.get();
+    List<QueryDocumentSnapshot<EventModel>> documentsSnapshots =
+        querySnapshot.docs;
+    List<EventModel> events = documentsSnapshots
+        .map((docSnapshot) => docSnapshot.data())
+        .toList();
+    List<EventModel> favouriteEvents = events
+        .where(
+          (events) => UserModel.currentUser!.favouriteEventsIds.contains(
+            events.eventId,
+          ),
+        )
+        .toList();
+    return favouriteEvents;
   }
 }

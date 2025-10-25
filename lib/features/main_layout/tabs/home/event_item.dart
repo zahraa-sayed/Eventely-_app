@@ -1,14 +1,23 @@
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/extensions/date_time_ex.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
+import 'package:evently_app/firebase_service/firebase_service.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EventItem extends StatelessWidget {
-  EventItem({super.key, required this.event});
+class EventItem extends StatefulWidget {
+  EventItem({super.key, required this.event, required this.favouriteEvent});
   final EventModel event;
+  final bool favouriteEvent;
+
+  @override
+  State<EventItem> createState() => _EventItemState();
+}
+
+class _EventItemState extends State<EventItem> {
+  late bool isFavourite = widget.favouriteEvent;
   List<String> months =[
     "Jan",
     "Feb",
@@ -36,7 +45,7 @@ class EventItem extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(ImageAssets.meetingCover)),
+                image: AssetImage(widget.event.category.imagePath)),
             borderRadius: BorderRadius.circular(16.r),
             border: Border.all(color: ColorsManager.blue, width: 1),
           ),
@@ -49,7 +58,7 @@ class EventItem extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        event.dateTime.day.toString(),
+                        widget.event.dateTime.day.toString(),
                         style: GoogleFonts.inter(
                           color: ColorsManager.blue,
                           fontSize: 20.sp,
@@ -57,7 +66,7 @@ class EventItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        event.dateTime.viewMonth,
+                        widget.event.dateTime.viewMonth,
                         style: GoogleFonts.inter(
                           color: ColorsManager.blue,
                           fontSize: 14.sp,
@@ -80,14 +89,14 @@ class EventItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          event.title,
+                          widget.event.title,
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: _markEventAsFavourite,
                         icon: Icon(
-                          Icons.favorite_border,
+                          isFavourite? Icons.favorite : Icons.favorite_border,
                           color: ColorsManager.blue,
                         ),
                       ),
@@ -100,5 +109,18 @@ class EventItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _markEventAsFavourite() async {
+    if(isFavourite){
+      await FirebaseService.removeEventFromFavourite(widget.event);
+      isFavourite = false;
+    }else{
+      await FirebaseService.addEventToFavourite(widget.event);
+      isFavourite = true;
+    }
+    setState(() {
+
+    });
   }
 }

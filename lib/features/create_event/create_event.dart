@@ -59,7 +59,7 @@ class _CreateEventState extends State<CreateEvent> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.r),
-                child: Image.asset(ImageAssets.bookClub),
+                child: Image.asset(selectedCategory.imagePath),
               ),
               SizedBox(height: 16.h),
               CustomTabBar(
