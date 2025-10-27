@@ -9,8 +9,15 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../../models/category_models.dart';
 
-class FavoriteTab extends StatelessWidget {
+class FavoriteTab extends StatefulWidget {
   const FavoriteTab({super.key});
+
+  @override
+  State<FavoriteTab> createState() => _FavoriteTabState();
+}
+
+class _FavoriteTabState extends State<FavoriteTab> {
+  List<EventModel> filteredList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +28,9 @@ class FavoriteTab extends StatelessWidget {
           Container(
             margin: REdgeInsets.symmetric(horizontal: 16),
             child: TextField(
+              onChanged: (value) {
+                filterEventsBySearchKey(value, context);
+              },
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16.r),
@@ -40,25 +50,45 @@ class FavoriteTab extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 16.h,),
-          FutureBuilder(future: FirebaseService.getFavouriteEvents(context), builder: (context, snapshot){
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator(),);
-            }
-            if(snapshot.hasError){
-              return Center(child: Text(snapshot.error.toString()),);
-            }
-            List<EventModel> favouriteEvents = snapshot.data ?? [];
-            return Expanded(child: ListView.separated(
-              itemBuilder: (context, index)=>EventItem(event: favouriteEvents[index], favouriteEvent: true,),
-              separatorBuilder: (context, index)=>SizedBox(height: 16.h,),
-              itemCount: favouriteEvents.length,
-            )
-            );
-          })
-
+          SizedBox(height: 16.h),
+          FutureBuilder(
+            future: FirebaseService.getFavouriteEvents(context),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
+              List<EventModel> favouriteEvents = snapshot.data ?? [];
+              List<EventModel> displayList = filteredList.isEmpty
+                  ? favouriteEvents
+                  : filteredList;
+              return Expanded(
+                child: ListView.separated(
+                  itemBuilder: (context, index) => EventItem(
+                    event: displayList[index],
+                    favouriteEvent: true,
+                  ),
+                  separatorBuilder: (context, index) => SizedBox(height: 16.h),
+                  itemCount: displayList.length,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
+  }
+
+  void filterEventsBySearchKey(String searchKey, BuildContext context) async {
+    final allEvents = await FirebaseService.getFavouriteEvents(context);
+    filteredList = allEvents
+        .where(
+          (event) =>
+              event.title.toLowerCase().contains(searchKey.toLowerCase()),
+        )
+        .toList();
+    setState(() {});
   }
 }

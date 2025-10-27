@@ -49,7 +49,7 @@ class Evently extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: FirebaseAuth.instance.currentUser == null
             ? RoutesManager.login
-            : RoutesManager.mainLayout,
+            : RoutesManager.splashScreen,
         onGenerateRoute: RoutesManager.router,
         theme: ThemeManager.light,
         darkTheme: ThemeManager.dark,

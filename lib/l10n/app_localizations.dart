@@ -403,6 +403,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Events'**
   String get no_event;
+
+  /// No description provided for @lets_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Let’s Start'**
+  String get lets_start;
 }
 
 class _AppLocalizationsDelegate

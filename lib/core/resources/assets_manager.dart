@@ -1,6 +1,9 @@
 abstract class ImageAssets {
   static const String base = "assets/images";
   static const String logo = "$base/Logo.png";
+  static const String routeLogo = "$base/routeLogo.png";
+  static const String mineLogo = "$base/mineLogo.png";
+  static const String beingCreative = "$base/being-creative.png";
   static const String google = "$base/google-1.png";
   static const String meetingCover = "$base/meeting.png";
   static const String birthday = "$base/birthday.png";
@@ -12,4 +15,7 @@ abstract class ImageAssets {
   static const String gaming = "$base/gaming.png";
   static const String exhibition = "$base/exhibition.png";
   static const String eating = "$base/eating.png";
+  static const String onBoarding3 = "$base/onBoarding3.png";
+  static const String onBoarding1 = "$base/onBoarding1.png";
+  static const String onBoarding2 = "$base/onBoarding2.png";
 }

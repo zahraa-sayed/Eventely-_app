@@ -160,4 +160,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get no_event => 'لا أحداث';
+
+  @override
+  String get lets_start => 'ابدأ الآن';
 }

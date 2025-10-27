@@ -3,6 +3,9 @@
         android:label="evently_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDrS1QcmvSmop06_t7S9IGggh9Mk7p8pQQ"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
